@@ -341,3 +341,46 @@ GameMap.STATES = {
 
 /** @constant {number} EXERCISE_SCREEN_ANIM_DURATION_MS Duration from CSS. */
 GameMap.EXERCISE_SCREEN_ANIM_DURATION_MS = 1000;
+
+// CONECT TO DB
+// Assuming you have a method to get the user ID
+const userId = getUserId(); // Replace this with the actual method to get the user ID
+
+fetch(`http://your-server-domain-or-ip:5000/getGameData/${userId}`)
+  .then(response => response.json())
+  .then(data => {
+    initializeGame(data); // Function to initialize the game with fetched data
+  });
+
+function initializeGame(data) {
+  // Your existing game initialization code here, using the fetched data
+}
+
+// Hide the edit function for non-admin users
+if (!user.isAdmin) {
+  document.querySelector('.edit-button').style.display = 'none';
+}
+
+// Example code to integrate the game logic with H5P
+
+H5P.MyGameMap = (function ($) {
+  function MyGameMap(options, id) {
+    this.options = options;
+    this.id = id;
+
+    // Initialize the game after fetching data
+    const userId = getUserId(); // Implement this method as needed
+
+    fetch(`http://your-server-domain-or-ip:5000/getGameData/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        initializeGame(data);
+      });
+  }
+
+  return MyGameMap;
+})(H5P.jQuery);
+
+function initializeGame(data) {
+  // Your game initialization code
+}
